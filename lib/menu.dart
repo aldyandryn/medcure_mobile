@@ -5,17 +5,21 @@ class MyHomePage extends StatelessWidget {
     MyHomePage({Key? key}) : super(key: key);
 
     final List<ShopItem> items = [
-    ShopItem("Lihat Item", Icons.checklist),
-    ShopItem("Tambah Item", Icons.add_shopping_cart),
-    ShopItem("Logout", Icons.logout),
+    ShopItem("Lihat Item", Icons.checklist, Colors.blueAccent),
+    ShopItem("Tambah Item", Icons.add_shopping_cart,Colors.yellowAccent),
+    ShopItem("Logout", Icons.logout, Colors.redAccent),
     ];
 
     @override
     Widget build(BuildContext context) {
         return Scaffold(
           appBar: AppBar(
+            backgroundColor : Colors.indigo,
             title: const Text(
               'MedCure',
+              style: TextStyle(
+                color: Colors.white
+              ),
             ),
           ),
           body: SingleChildScrollView(
@@ -62,8 +66,9 @@ class MyHomePage extends StatelessWidget {
 class ShopItem {
   final String name;
   final IconData icon;
+  final Color color;
 
-  ShopItem(this.name, this.icon);
+  ShopItem(this.name, this.icon, this.color);
 }
 
 class ShopCard extends StatelessWidget {
@@ -74,7 +79,7 @@ class ShopCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.indigo,
+      color: item.color,
       child: InkWell(
         // Area responsive terhadap sentuhan
         onTap: () {
