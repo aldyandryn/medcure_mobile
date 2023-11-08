@@ -63,15 +63,14 @@ Kelas: PBP B
         ```
   7. Membuat class `ShopItem` untuk button pada homepage dengan attribute nama, icon, dan warna (bonus)
       ```dart
-        class ButtonItem {
+        class ShopItem {
         final String name;
         final IconData icon;
-        final Color color;
 
-        ButtonItem(this.name, this.icon,this.color);
+        ShopItem(this.name, this.icon);
         }
         ```
-  9.  Membuat class `ButtonCard` untuk mengatur tampilan dan action button termasuk untuk snackbar
+  9.  Membuat class `ShopCard` untuk mengatur tampilan dan action button termasuk untuk snackbar
       ```
       class ShopCard extends StatelessWidget {
           final ShopItem item;
@@ -81,7 +80,6 @@ Kelas: PBP B
           @override
           Widget build(BuildContext context) {
             return Material(
-              color: Colors.indigo,
               child: InkWell(
                 // Area responsive terhadap sentuhan
                 onTap: () {
@@ -141,6 +139,80 @@ Kelas: PBP B
         return ShopCard(item);
       }).toList(),
     ```
+
+ ## Cara mengerjakan bonus
+1. Di class `ShopItem` tambahkan constructor color
+     ```
+     
+class ShopItem {
+  final String name;
+  final IconData icon;
+  final Color color;
+
+  ShopItem(this.name, this.icon, this.color);
+}
+
+   ```
+
+2. Tambahkan `color: item.color` di kelas ShopCard, tepatnya di bawah `return Material ( ... ) ` sehingga menjadi:
+ ```
+  
+  class ShopCard extends StatelessWidget {
+    final ShopItem item;
+  
+    const ShopCard(this.item, {super.key}); // Constructor
+  
+    @override
+    Widget build(BuildContext context) {
+      return Material(
+        color: item.color,
+        child: InkWell(
+          // Area responsive terhadap sentuhan
+          onTap: () {
+            // Memunculkan SnackBar ketika diklik
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(SnackBar(
+                  content: Text("Kamu telah menekan tombol ${item.name}!")));
+          },
+          child: Container(
+            // Container untuk menyimpan Icon dan Text
+            padding: const EdgeInsets.all(8),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    item.icon,
+                    color: Colors.white,
+                    size: 30.0,
+                  ),
+                  const Padding(padding: EdgeInsets.all(3)),
+                  Text(
+                    item.name,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  }
+  ```
+
+3. Ubah list `ShopItem` menjadi:
+    ```
+    final List<ShopItem> items = [
+        ShopItem("Lihat Item", Icons.checklist, Colors.blueAccent),
+        ShopItem("Tambah Item", Icons.add_shopping_cart,Colors.yellowAccent),
+        ShopItem("Logout", Icons.logout, Colors.redAccent),
+        ];
+    ```
+
+     
     
 # Referensi
 - [Flutter – Stateless Vs Stateful](https://www.kawankoding.id/flutter-stateless-vs-stateful/)
