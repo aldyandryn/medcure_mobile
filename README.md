@@ -143,14 +143,13 @@ Kelas: PBP B
  ## Cara mengerjakan bonus
 1. Di class `ShopItem` tambahkan constructor color
      ```
-     
-class ShopItem {
-  final String name;
-  final IconData icon;
-  final Color color;
-
-  ShopItem(this.name, this.icon, this.color);
-}
+    class ShopItem {
+      final String name;
+      final IconData icon;
+      final Color color;
+    
+      ShopItem(this.name, this.icon, this.color);
+    }
 
    ```
 
