@@ -11,15 +11,15 @@ class ItemDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blue,
       appBar: AppBar(
         title: const Text('Item Details'),
-        backgroundColor: Colors.grey.shade800,
+        backgroundColor: const Color.fromARGB(255, 167, 227, 255),
         foregroundColor: Colors.white,
       ),
       drawer: const LeftDrawer(),
       body: Material(
-        color: Colors.black,
+        color: Colors.lightBlueAccent,
         borderRadius: BorderRadius.circular(20),
         child: Container(
           padding: const EdgeInsets.all(8),
