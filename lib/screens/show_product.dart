@@ -39,7 +39,6 @@ class ShowItems extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-                  // Untuk menambahkan logika untuk menavigasi ke halaman detail produk jika diperlukan.
                   showDialog(
                     context: context,
                     builder: (context) {

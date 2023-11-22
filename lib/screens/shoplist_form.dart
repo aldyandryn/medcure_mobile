@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:medcure_mobile/screens/menu.dart';
 import 'package:medcure_mobile/widgets/left_drawer.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class Item {
   static List<Item> itemList = [];
@@ -28,6 +33,7 @@ class _ShopFormPageState extends State<ShopFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -57,11 +63,11 @@ class _ShopFormPageState extends State<ShopFormPage> {
                   ),
                 ),
                 onChanged: (String? value) {
-                  if (value != null) {
-                    setState(() {
-                      _name = value;
-                    });
-                  }
+
+                  setState(() {
+                    _name = value!;
+                  });
+            
                 },
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
@@ -158,40 +164,37 @@ class _ShopFormPageState extends State<ShopFormPage> {
                     backgroundColor: MaterialStateProperty.all(
                         Colors.amber),
                   ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            backgroundColor: const Color.fromRGBO(237, 222, 173, 1.0),
-                            title: const Text('Item berhasil disimpan'),
-                            content: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Nama: $_name'),
-                                  Text('Harga: $_price'),
-                                  Text('Amount: $_amount'),
-                                  Text('Deskripsi: $_description'),
-                                ],
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                child: const Text('OK'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                   _formKey.currentState!.reset();
-                                    Item.itemList.add(Item(_name, _price, _amount, _description));
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                      _formKey.currentState!.reset();
-                    }
+                  onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                          // Kirim ke Django dan tunggu respons
+                          // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                          final response = await request.postJson(
+                          "http://localhost:8000//create-flutter/",
+                          jsonEncode(<String, String>{
+                              'name': _name,
+                              'price': _price.toString(),
+                              'amount': _amount.toString(),
+                              'description': _description,
+
+                              // TODO: Sesuaikan field data sesuai dengan aplikasimu
+                          }));
+                          if (response['status'] == 'success') {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                              content: Text("Produk baru berhasil disimpan!"),
+                              ));
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => MyHomePage()),
+                              );
+                          } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                  content:
+                                      Text("Terdapat kesalahan, silakan coba lagi."),
+                              ));
+                          }
+                      }
                   },
                   child: const Text(
                     "Save",

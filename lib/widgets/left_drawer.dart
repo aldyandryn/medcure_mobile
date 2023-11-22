@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medcure_mobile/screens/list_product.dart';
 import 'package:medcure_mobile/screens/menu.dart';
 import 'package:medcure_mobile/screens/shoplist_form.dart';
 import 'package:medcure_mobile/screens/show_product.dart';
@@ -18,7 +19,7 @@ class LeftDrawer extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'SF Autoparts',
+                  'MedCure',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,
@@ -27,7 +28,7 @@ class LeftDrawer extends StatelessWidget {
                   ),
                 ),
                 Padding(padding: EdgeInsets.all(10)),
-                Text("Where you keep all your automobile parts!",
+                Text("For your health!",
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.white,
@@ -51,24 +52,11 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.list_sharp),
-            title: const Text('Daftar Item'),
-            // Bagian redirection ke Show product
-            onTap: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ShowItems(itemList: Item.itemList),
-                  )
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.add_task),
+            leading: const Icon(Icons.add_shopping_cart),
             title: const Text('Tambah Item'),
             // Bagian redirection ke ShopFormPage
             onTap: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const ShopFormPage(),
@@ -76,6 +64,19 @@ class LeftDrawer extends StatelessWidget {
               );
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.shopping_basket),
+            title: const Text('Daftar Item'),
+            onTap: () {
+                // Route menu ke halaman produk
+                Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProductPage(),
+                )
+              );
+            },
+          ),
+          
         ],
       ),
     );
