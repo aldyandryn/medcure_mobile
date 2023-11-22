@@ -604,6 +604,79 @@ Jawab:
 
 # Tugas 9
 
+##  Apakah bisa kita melakukan pengambilan data JSON tanpa membuat model terlebih dahulu? Jika iya, apakah hal tersebut lebih baik daripada membuat model sebelum melakukan pengambilan data JSON?
+Tentu, kita bisa mengambil data JSON tanpa harus membuat model terlebih dahulu, contohnya dengan menyimpan data JSON di dalam sebuah map. Namun, pendekatan tersebut tidak lebih baik daripada membuat model sebelum mengambil data JSON karena akan membuat kode menjadi lebih rumit dan mengurangi tingkat keterbacaan kode. Dengan membuat model, kode akan lebih terstruktur dan terabstraksi, yang merupakan salah satu keuntungan dari pemrograman berorientasi objek (OOP)
+
+## Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+CookieRequest adalah sebuah kelas yang digunakan untuk mengurus HTTP request dan mengelola cookie yang terkait dengan request tersebut. Kelas ini menyediakan berbagai metode seperti login, get, post, dan logout untuk melakukan operasi terkait HTTP.
+
+Diperlukan berbagi instance CookieRequest ke semua bagian komponen dalam aplikasi Flutter agar semua komponen tersebut memiliki kemampuan untuk melakukan HTTP request yang sudah terautentikasi, dan semuanya dapat mengakses data pengguna yang sama.
+
+Contohnya, dalam tugas saat ini, instance CookieRequest disebarkan ke seluruh komponen melalui Provider, dan kemudian diakses di BookshelfFormPage menggunakan context.watch<CookieRequest>() untuk melakukan permintaan HTTP POST ke server saat tombol "save" ditekan, dengan tujuan mengirimkan data buku baru ke server.
+
+## Jelaskan mekanisme pengambilan data dari JSON hingga dapat ditampilkan pada Flutter.
+
+1. Fungsi `fetchProduct` membuat permintaan HTTP GET ke URL yang kita inginkan secara asinkron
+
+```dart
+var url = Uri.parse(
+        'http://localhost:8000//json/');
+    var response = await http.get(
+        url,
+        headers: {"Content-Type": "application/json"},
+    );
+```
+
+2. melakukan decode response menjadi bentuk json
+
+```dart
+var data = jsonDecode(utf8.decode(response.bodyBytes));
+```
+
+3. melakukan konversi data json menjadi object Product
+
+```dart
+List<Product> list_product = [];
+    for (var d in data) {
+        if (d != null) {
+            list_product.add(Product.fromJson(d));
+        }
+    }
+    return list_product;
+```
+
+4. Dalam method `build`, `FutureBuilder` digunakan untuk menunggu `fetchProduct` selesai dan membangun UI berdasarkan hasilnya. Jika data masih dimuat, `CircularProgressIndicator` akanditampilkan. Jika data telah dimuat, `ListView.builder` digunakan untuk membuat list.
+
+## Jelaskan mekanisme autentikasi dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+
+Berikut adalah parafrase untuk kalimat-kalimat tersebut:
+
+1. Pengguna menginputkan _username_ dan _password_ melalui dua bidang teks (`TextField`).
+
+2. Setelah itu, aplikasi akan melakukan permintaan HTTP POST ke _endpoint_ _login_ di Django dengan menggunakan objek `CookieRequest`. Data _username_ dan _password_ akan dikirimkan sebagai bagian dari permintaan dalam _body request_.
+
+3. Django akan memproses permintaan login tersebut dengan memeriksa kevalidan _username_ dan _password_, dan kemudian mengirimkan sebuah respons. Respons ini akan diterima oleh aplikasi Flutter, dan aplikasi akan melakukan pemeriksaan. Jika login berhasil (kondisi `request.loggedIn` bernilai `true`), aplikasi akan melakukan navigasi ke halaman `MyHomePage` dan menampilkan pesan selamat datang. Jika login gagal, aplikasi akan menampilkan pesan kesalahan.
+
+
+## Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
+.
+- TextButton: Berfungsi untuk menampilkan tombol yang berisi teks.
+- TextField: Digunakan untuk menerima input teks dari pengguna.
+- InputDecoration: Untuk menentukan tampilan dan gaya dari elemen TextField.
+- SizedBox: Berperan dalam memberikan spasi atau jarak antara dua widget.
+- ElevatedButton: Menghasilkan tombol yang menonjol atau "raised" dalam tampilan.
+- TextButton: Berfungsi untuk menampilkan tombol yang berisi teks.
+- Provider: Untuk menyediakan objek yang dapat dibaca oleh widget lain yang berada di bawahnya dalam hierarki widget, dalam tugas ini digunakan untuk menyediakan instance CookieRequest ke widget lain.
+- TextField: Digunakan untuk menerima input teks dari pengguna.
+- AlertDialog: Digunakan untuk menampilkan dialog sebagai pesan peringatan atau informasi kepada pengguna
+- Navigator: Bertanggung jawab atas manajemen navigasi dan mengelola tumpukan rute dalam aplikasi.
+- MaterialPageRoute: Mengatur efek transisi ketika berpindah antara halaman dalam aplikasi.
+- ListView.builder: Membuat daftar dengan item yang dibangun secara dinamis saat ditampilkan dalam tampilan.
+- FutureBuilder: Menghasilkan widget berdasarkan hasil dari Future, dalam tugas ini digunakan untuk membangun ListView berdasarkan hasil dari fungsi fetchItem().
+- LoginPage: Sebuah widget kustom yang digunakan untuk menampilkan halaman login.
+- ItemDetailsPage: Untuk menampilkan halaman detail produk
+- ScaffoldMessenger: Digunakan untuk menampilkan pesan notifikasi seperti SnackBar.
+
 ## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
 1. Sistem autentikasi dan halaman login
 - melakukan startapp authentication lalu tambahkan authentication di Installed Apps settings.py dan corsheader
