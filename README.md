@@ -942,7 +942,7 @@ else if (item.name == "Lihat Item") {
 ElevatedButton(
 style: ButtonStyle(
 backgroundColor:
- MaterialStateProperty.all<Color>(Colors.grey.shade700),
+ MaterialStateProperty.all<Color>(Colors.blueGrey),
 ),
 onPressed: () {
 Navigator.push(context,MaterialPageRoute(builder: (context) => ItemDetailsPage(snapshot.data![index])),
